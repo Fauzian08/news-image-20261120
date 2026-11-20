@@ -142,6 +142,26 @@ STORIES = [
      "Xi urges trust-based partnership", "REPORTED"),
     ("Senegal boat capsizing kills 4",
      "Deaths amid a surge in migration crossings", "REPORTED"),
+    ("Asian markets rout: worst week since 2020",
+     "Nikkei \u22125%, Kospi \u22125.2%; MSCI Asia \u22123.2% in a day", "REPORTED"),
+    ("Ukraine's allies meet in Berlin, back talks",
+     "Europe 'ready to talk with Russia'; US open to guarantees", "REPORTED"),
+    ("GTA VI sells 24.6m copies in a day",
+     "Sensor Tower estimate: $2.36bn on day one", "REPORTED"),
+    ("White House names new cyber chief",
+     "Kirsten Davies tapped after widespread outages", "REPORTED"),
+    ("Democrats warn Trump team: save records",
+     "Preservation letters sent to dozens of officials", "REPORTED"),
+    ("DHS rushes billions for deportations",
+     "Contracts for flights, wall, detention before handover", "REPORTED"),
+    ("California subpoenas Nvidia over chips",
+     "Attorney general probes chips, ex-CEO's affair", "REPORTED"),
+    ("Italy hit by nationwide strike",
+     "Workers, students march over wages and living costs", "REPORTED"),
+    ("Blasts hit 7 areas in south Thailand",
+     "Explosions reported across Narathiwat province", "REPORTED"),
+    ("Pakistan beat Sri Lanka, take Test series",
+     "Eight-wicket win in second Test seals series", "REPORTED"),
 ]
 
 TIMELINE = [
@@ -150,13 +170,14 @@ TIMELINE = [
     ("MIDDAY", "White House fires cyber chief"),
     ("AFTERNOON", "EU to summon Russian envoy over Kyiv damage"),
     ("LATE AFT.", "UK pledges 1,000+ drones for Ukraine"),
-    ("EVENING", "COP31 wraps up in Türkiye"),
+    ("EVENING", "GTA VI sells 24.6m copies in a day"),
 ]
 
 EXCLUDED = ("ICJ Myanmar genocide verdict  ·  Anthropic Nasdaq debut (+17%)  ·  "
             "US Senate rejects Iran war-powers vote 51\u201348  ·  APEC Shenzhen closes  ·  "
             "Voyager 1 phones home  ·  Fiona the hippo dies  ·  "
-            "Xi\u2013Trump\u2013Putin peace declaration  \u2014  ALL 19 NOV")
+            "Xi\u2013Trump\u2013Putin peace declaration  ·  "
+            "Trump asks court to drop Alaska suit  \u2014  ALL 19 NOV")
 
 # Rough continent outlines in (lon, lat); drawn on an equirectangular strip.
 CONTINENTS = [
@@ -186,8 +207,9 @@ CONTINENTS = [
 MAP_POINTS = [
     (114, 22, "Shenzhen"), (30, 50, "Kyiv"), (47, 25, "Riyadh"),
     (-77, 39, "Washington"), (85, 19, "Gopalpur"), (0, 51, "London"),
-    (-58, -35, "Buenos Aires"), (45, 2, None), (34, 31, "Gaza"),
-    (149, -35, None), (17, 15, "Dakar"),
+    (-58, -35, "Buenos Aires"), (45, 2, None), (34, 31, None),
+    (149, -35, None), (17, 15, "Dakar"), (139, 35, "Tokyo"),
+    (13, 52, None), (12, 42, None), (101, 6, None),
 ]
 
 
@@ -250,9 +272,9 @@ def draw_art(draw, kind, x, y, w, h):
             draw.ellipse([sx - 2, sy - 2, sx + 2, sy + 2], fill=WHITE)
         draw.ellipse([x + w - 52, y + 12, x + w - 28, y + 36],
                      fill=(240, 230, 200))
-        bx, by = x + 40, y + h - 60
+        bx, by = x + 40, y + h - 54
         draw.rectangle([bx, by, bx + 130, y + h], fill=(212, 196, 160))
-        for dx, dw, dh in [(8, 26, 26), (52, 34, 32), (104, 26, 26)]:
+        for dx, dw, dh in [(8, 26, 24), (52, 34, 28), (104, 26, 24)]:
             draw.rectangle([bx + dx, by - dh + 14, bx + dx + dw, by + 14],
                            fill=(212, 196, 160))
             draw.ellipse([bx + dx - 2, by - dh - 2, bx + dx + dw + 2,
@@ -284,10 +306,10 @@ def draw_card(draw, card, x, y, w, h):
     draw.text((x + 12, y + 8), card["kicker"], font=font(BOLD, 12), fill=WHITE)
     chip(draw, x + w - 82, y + 7, card["tag"], font(BOLD, 9))
     # illustration
-    draw_art(draw, card["art"], x + 10, y + 40, w - 20, 104)
+    draw_art(draw, card["art"], x + 10, y + 40, w - 20, 88)
     # headline
     f_head = font(BOLD, 20)
-    hy = y + 152
+    hy = y + 136
     for line in card["head"].split("\n"):
         draw.text((x + 12, hy), line, font=f_head, fill=INK)
         hy += 24
@@ -295,7 +317,7 @@ def draw_card(draw, card, x, y, w, h):
     f_sub = font(REG, 12)
     lines = wrap(draw, card["sub"], f_sub, w - 24)
     sy = hy + 6
-    for line in lines[:4]:
+    for line in lines[:3]:
         draw.text((x + 12, sy), line, font=f_sub, fill=(64, 60, 52))
         sy += 16
 
@@ -334,7 +356,7 @@ def main():
     d.text((MARGIN, 60),
            "The day\u2019s world news \u2014 every story below happened or was first reported today.",
            font=font(REG, 13), fill=GRAY)
-    d.text((W - MARGIN, 60), "21 STORIES  ·  6 REGIONS", font=font(BOLD, 12),
+    d.text((W - MARGIN, 60), "31 STORIES  ·  6 REGIONS", font=font(BOLD, 12),
            fill=INK, anchor="ra")
     d.line([(MARGIN, 86), (W - MARGIN, 86)], fill=INK, width=2)
     d.line([(MARGIN, 89), (W - MARGIN, 89)], fill=INK, width=1)
@@ -342,58 +364,58 @@ def main():
     # ---- three lead cards
     cw, gap = 328, 8
     for i, card in enumerate(CARDS):
-        draw_card(d, card, MARGIN + i * (cw + gap), 96, cw, 272)
+        draw_card(d, card, MARGIN + i * (cw + gap), 96, cw, 240)
 
     # ---- world map strip
-    d.text((MARGIN, 376), "WHERE IT HAPPENED", font=font(BOLD, 14), fill=INK)
-    d.text((W - MARGIN, 378),
-           "7 AMERICAS  ·  5 EUROPE  ·  4 ASIA-PACIFIC  ·  2 MIDDLE EAST  ·  "
+    d.text((MARGIN, 344), "WHERE IT HAPPENED", font=font(BOLD, 14), fill=INK)
+    d.text((W - MARGIN, 346),
+           "12 AMERICAS  ·  7 EUROPE  ·  7 ASIA-PACIFIC  ·  2 MIDDLE EAST  ·  "
            "2 AFRICA  ·  1 GLOBAL",
            font=font(BOLD, 11), fill=GRAY, anchor="ra")
-    draw_map(d, MARGIN, 396, W - 2 * MARGIN, 128)
+    draw_map(d, MARGIN, 362, W - 2 * MARGIN, 96)
 
     # ---- story grid
-    d.text((MARGIN, 532), "THE DAY\u2019S NEWS \u2014 EVERY STORY TAGGED",
+    d.text((MARGIN, 466), "THE DAY\u2019S NEWS \u2014 EVERY STORY TAGGED",
            font=font(BOLD, 14), fill=INK)
-    f_head, f_sub, f_tag = font(BOLD, 13), font(REG, 11), font(BOLD, 9)
+    f_head, f_sub, f_tag = font(BOLD, 12), font(REG, 10), font(BOLD, 9)
     col_w = 488
     for i, (head, sub, tag) in enumerate(STORIES):
         col = i % 2
         row = i // 2
         x = MARGIN + col * (col_w + 16)
-        y = 554 + row * 32
+        y = 486 + row * 27
         chip(d, x, y + 1, tag, f_tag)
         d.text((x + 74, y), head, font=f_head, fill=INK)
-        d.text((x + 74, y + 16), sub, font=f_sub, fill=GRAY)
+        d.text((x + 74, y + 14), sub, font=f_sub, fill=GRAY)
 
     # ---- timeline
-    d.text((MARGIN, 850), "THE DAY, IN ORDER", font=font(BOLD, 13), fill=INK)
-    d.line([(MARGIN + 8, 884), (W - MARGIN - 8, 884)], fill=(150, 144, 130),
+    d.text((MARGIN, 866), "THE DAY, IN ORDER", font=font(BOLD, 13), fill=INK)
+    d.line([(MARGIN + 8, 898), (W - MARGIN - 8, 898)], fill=(150, 144, 130),
            width=2)
     slot = (W - 2 * MARGIN) / len(TIMELINE)
     for i, (when, what) in enumerate(TIMELINE):
         cx = MARGIN + slot * i + slot / 2
-        d.ellipse([cx - 5, 879, cx + 5, 889], fill=RED, outline=WHITE, width=2)
-        d.text((cx, 866), when, font=font(BOLD, 10), fill=RED, anchor="ma")
+        d.ellipse([cx - 5, 893, cx + 5, 903], fill=RED, outline=WHITE, width=2)
+        d.text((cx, 882), when, font=font(BOLD, 10), fill=RED, anchor="ma")
         lines = wrap(d, what, font(REG, 11), slot - 14)
-        ty = 894
+        ty = 908
         for line in lines[:2]:
             d.text((cx, ty), line, font=font(REG, 11), fill=INK, anchor="ma")
-            ty += 13
+            ty += 12
 
     # ---- date check strip
-    d.rounded_rectangle([MARGIN, 930, W - MARGIN, 996], radius=8, fill=DARK)
-    d.text((MARGIN + 12, 938), "\u2715  DATE CHECK \u2014 NOT 20 NOV, EXCLUDED:",
+    d.rounded_rectangle([MARGIN, 938, W - MARGIN, 998], radius=8, fill=DARK)
+    d.text((MARGIN + 12, 946), "\u2715  DATE CHECK \u2014 NOT 20 NOV, EXCLUDED:",
            font=font(BOLD, 13), fill=WHITE)
     f_exc = font(REG, 11)
     lines = wrap(d, EXCLUDED, f_exc, W - 2 * MARGIN - 24)
-    ey = 958
+    ey = 964
     for line in lines[:2]:
         d.text((MARGIN + 12, ey), line, font=f_exc, fill=(210, 205, 195))
         ey += 15
 
     # ---- footer
-    d.text((W // 2, 1002),
+    d.text((W // 2, 1004),
            "Tags \u2014 REPORTED: as reported  ·  CLAIM: single-source or contested  ·  "
            "FORECAST: about the future  ·  Drawn from wire reports published 20 Nov 2026",
            font=font(REG, 10), fill=GRAY, anchor="ma")
